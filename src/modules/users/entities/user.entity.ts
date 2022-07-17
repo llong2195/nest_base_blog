@@ -1,36 +1,40 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm'
-import { Exclude, Expose } from 'class-transformer'
-import { DateAudit } from 'src/base/date_audit.entity'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Exclude, Expose } from 'class-transformer';
+import { DateAudit } from 'src/base/date_audit.entity';
+import { UserFollow } from '../../user-follow/entities/user-follow.entity';
 
 @Entity({ name: 'users' })
 export class User extends DateAudit {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Unique(['email'])
   @Column()
-  email: string
+  email: string;
 
   @Column()
-  firstName: string
+  firstName: string;
 
   @Column()
-  lastName: string
+  lastName: string;
 
   @Exclude()
   @Column()
-  password: string
+  password: string;
 
   @Column({ default: true })
-  isActive: boolean
+  isActive: boolean;
+
+  @OneToMany(()=> UserFollow, UserFollow => UserFollow.follower_id)
+  userFollow: UserFollow;
 
   constructor(partial: Partial<User>) {
-    super()
-    Object.assign(this, partial)
+    super();
+    Object.assign(this, partial);
   }
 
   @Expose()
   get fullName(): string {
-    return `${this.firstName} ${this.lastName}`
+    return `${this.firstName} ${this.lastName}`;
   }
 }

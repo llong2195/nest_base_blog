@@ -4,21 +4,19 @@ import {
   CreateDateColumn,
   Entity,
   UpdateDateColumn,
-} from 'typeorm'
+} from 'typeorm';
 
 export class DateAudit extends BaseEntity {
   @Column({ default: false })
-  deleted: boolean
+  deleted: boolean;
 
   @CreateDateColumn({
-    default: `now()`,
     nullable: true,
   })
-  createdAt: string
+  createdAt: Date;
 
   @UpdateDateColumn({
-    default: `now()`,
     nullable: true,
   })
-  updatedAt: string
+  updatedAt: Date;
 }

@@ -2,12 +2,12 @@ import {
   ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
-} from 'class-validator'
+} from 'class-validator';
 
 @ValidatorConstraint({ name: 'isEqualPasswordField', async: false })
 export class PasswordConfirmValidator implements ValidatorConstraintInterface {
   defaultMessage(validationArguments?: ValidationArguments): string {
-    return `${validationArguments.property}" should be equal to "${validationArguments.constraints[0]}.`
+    return `${validationArguments.property}" should be equal to "${validationArguments.constraints[0]}.`;
   }
 
   validate(
@@ -16,6 +16,6 @@ export class PasswordConfirmValidator implements ValidatorConstraintInterface {
   ): Promise<boolean> | boolean {
     return (
       value === validationArguments.object[validationArguments.constraints[0]]
-    )
+    );
   }
 }

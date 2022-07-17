@@ -1,10 +1,25 @@
-import { IsNotEmpty, IsNumber } from 'class-validator'
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Tag } from 'src/modules/tags/entities/tag.entity';
+import { Category } from '../../categories/entities/category.entity';
 
 export class CreateBlogDto {
-  // @IsNotEmpty({ message: 'userId is not empty' })
-  // @IsNumber(undefined, { message: 'userId invalid' })
-  // userId: number
+  @IsNotEmpty({ message: 'name is not empty' })
+  @IsString()
+  name: string;
 
   @IsNotEmpty({ message: 'content is not empty' })
-  content: string
+  @IsString()
+  content: string;
+
+  @IsNotEmpty()
+  @IsString()
+  bannerUrl: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  tag_id: Tag[];
+
+  @IsOptional()
+  @IsNotEmpty()
+  cat_id: Category[];
 }

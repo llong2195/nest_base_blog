@@ -3,32 +3,32 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
-} from 'typeorm'
-import { User } from '../entities/user.entity'
-import * as bcrypt from 'bcrypt'
-import { ConfigService } from '@nestjs/config'
+} from 'typeorm';
+import { User } from '../entities/user.entity';
+import * as bcrypt from 'bcrypt';
+import { ConfigService } from '@nestjs/config';
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<User> {
-  private readonly bcryptSalt: number
+  private readonly bcryptSalt: number;
 
   constructor(
     connection: Connection,
     private readonly configService: ConfigService,
   ) {
-    connection.subscribers.push(this)
-    this.bcryptSalt = configService.get<number>('bcryptSalt')
+    connection.subscribers.push(this);
+    this.bcryptSalt = configService.get<number>('bcryptSalt');
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/ban-types
   listenTo(): string | Function {
-    return User
+    return User;
   }
 
   async beforeInsert(event: InsertEvent<User>): Promise<void> {
-    const { password } = event.entity
-    event.entity.password = await bcrypt.hash(password, this.bcryptSalt)
+    const { password } = event.entity;
+    event.entity.password = await bcrypt.hash(password, this.bcryptSalt);
   }
 }

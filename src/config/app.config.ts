@@ -4,4 +4,4 @@ export default (): Record<string, any> => ({
   minPasswordLength: 8,
   maxPasswordLength: 24,
   apiPrefix: process.env.API_PREFIX,
-})
+});

@@ -3,10 +3,10 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
-} from '@nestjs/common'
-import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
-import { BaseResponseDto } from 'src/base/base.dto'
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BaseResponseDto } from 'src/base/base.dto';
 
 @Injectable()
 export class ResponseTransformInterceptor<T>
@@ -19,6 +19,6 @@ export class ResponseTransformInterceptor<T>
       .handle()
       .pipe(
         map(response => ({ data: response.data, message: response.message })),
-      )
+      );
   }
 }
