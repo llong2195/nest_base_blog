@@ -1,7 +1,15 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
 import { DateAudit } from 'src/base/date_audit.entity';
 import { UserFollow } from '../../user-follow/entities/user-follow.entity';
+import { Permission } from '../../permission/entities/permission.entity';
 
 @Entity({ name: 'users' })
 export class User extends DateAudit {
@@ -22,10 +30,22 @@ export class User extends DateAudit {
   @Column()
   password: string;
 
+  @Column({ name: 'per_id' })
+  per_id: number;
+
+  @OneToMany(
+    () => Permission,
+    permission => permission.id,
+  )
+  permission: Permission[];
+
   @Column({ default: true })
   isActive: boolean;
 
-  @OneToMany(()=> UserFollow, UserFollow => UserFollow.follower_id)
+  @OneToMany(
+    () => UserFollow,
+    UserFollow => UserFollow.follower_id,
+  )
   userFollow: UserFollow;
 
   constructor(partial: Partial<User>) {

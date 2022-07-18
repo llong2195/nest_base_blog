@@ -1,9 +1,15 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Blog } from '../../blogs/entities/blog.entity';
 import { User } from '../../users/entities/user.entity';
 import { DateAudit } from '../../../base/date_audit.entity';
 
-@Entity({name: 'comment'})
+@Entity({ name: 'comment' })
 export class Comment extends DateAudit {
   @PrimaryGeneratedColumn()
   id: number;
@@ -21,14 +27,14 @@ export class Comment extends DateAudit {
     () => Blog,
     blog => blog.id,
   )
-  @JoinColumn({name: 'blog_id'})
+  @JoinColumn({ name: 'blog_id' })
   blog?: Blog;
 
   @ManyToOne(
     () => User,
     user => user.id,
   )
-  @JoinColumn({name: 'user_id'})
+  @JoinColumn({ name: 'user_id' })
   user?: User;
 
   constructor(partial: Partial<Comment>) {

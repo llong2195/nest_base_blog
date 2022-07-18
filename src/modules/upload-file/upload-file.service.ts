@@ -28,6 +28,8 @@ export class UploadFileService extends BaseService<
     userId: EntityId,
     file: Express.Multer.File,
   ): Promise<UploadFile> {
+    // console.log(file);
+
     fs.renameSync(file.path, path.resolve('src/public/file', file.filename));
     const createUploadFile = new UploadFile(null);
     createUploadFile.name = file.filename;

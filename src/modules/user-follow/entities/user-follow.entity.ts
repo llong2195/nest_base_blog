@@ -1,9 +1,15 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { DateAudit } from '../../../base/date_audit.entity';
 import { User } from '../../users/entities/user.entity';
-@Entity({name: 'user_follow'})
+@Entity({ name: 'user_follow' })
 export class UserFollow extends DateAudit {
-
   @PrimaryColumn({ name: 'user_id' })
   user_id: number;
 

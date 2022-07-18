@@ -21,6 +21,8 @@ import { BlogCatModule } from './modules/blog-cat/blog-cat.module';
 import { BlogLikeModule } from './modules/blog-like/blog-like.module';
 import { UserFollowModule } from './modules/user-follow/user-follow.module';
 import { CommentModule } from './modules/comment/comment.module';
+import { PermissionModule } from './modules/permission/permission.module';
+import { PerDetailModule } from './modules/per-detail/per-detail.module';
 
 @Module({
   imports: [
@@ -42,6 +44,8 @@ import { CommentModule } from './modules/comment/comment.module';
     BlogLikeModule,
     UserFollowModule,
     CommentModule,
+    PermissionModule,
+    PerDetailModule,
   ],
   controllers: [],
   providers: [

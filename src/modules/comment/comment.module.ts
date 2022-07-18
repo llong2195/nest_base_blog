@@ -9,6 +9,6 @@ import { UserHttpModule } from '../users/user-http.module';
   controllers: [CommentController],
   providers: [CommentService],
   imports: [TypeOrmModule.forFeature([CommentRepository]), UserHttpModule],
-  exports: [CommentService]
+  exports: [CommentService],
 })
 export class CommentModule {}

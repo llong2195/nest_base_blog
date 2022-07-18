@@ -22,7 +22,13 @@ export class UserFollowService extends BaseService<
     const userFollow = this.store(createUserFollow);
     return userFollow;
   }
-  async unfollow({ user_id, follower_id }: { user_id: EntityId; follower_id: EntityId; }) {
+  async unfollow({
+    user_id,
+    follower_id,
+  }: {
+    user_id: EntityId;
+    follower_id: EntityId;
+  }) {
     return await this.repository
       .createQueryBuilder()
       .delete()

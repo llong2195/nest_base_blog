@@ -20,6 +20,11 @@ import { DeleteResult } from 'typeorm/index';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AuthUser } from 'src/decorators/auth.user.decorator';
 import { plainToClass } from 'class-transformer';
+import { RBACGuard } from '../auth/guards/rbac.guard';
+import { RBAC } from '../auth/decorator/rbac.decorator';
+import { ACTION, TABLE } from '../per-detail/entities/per-detail.entity';
+// import { RBACGuard } from '../auth/guards/rbac.guard';
+// import { RBAC } from '../auth/decorator/rbac.decorator';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('tags')
@@ -27,6 +32,8 @@ import { plainToClass } from 'class-transformer';
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 
+  @UseGuards(RBACGuard)
+  @RBAC({ table: TABLE.TAG, action: ACTION.CREATE })
   @Post()
   async create(
     @Body() createTagDto: CreateTagDto,
@@ -36,6 +43,8 @@ export class TagsController {
     return new BaseResponseDto<Tag>('Success', plainToClass(Tag, tag));
   }
 
+  @UseGuards(RBACGuard)
+  @RBAC({ table: TABLE.TAG, action: ACTION.READ })
   @Get()
   async index(): Promise<BaseResponseDto<Tag[]>> {
     const tags = await this.tagsService.index();
@@ -54,6 +63,8 @@ export class TagsController {
     return new BaseResponseDto<Tag>('Success', plainToClass(Tag, tag));
   }
 
+  @UseGuards(RBACGuard)
+  @RBAC({ table: TABLE.TAG, action: ACTION.EDIT })
   @Patch(':id')
   async update(
     @Param('id') id: EntityId,
@@ -63,6 +74,8 @@ export class TagsController {
     return new BaseResponseDto<Tag>('Success', plainToClass(Tag, tag));
   }
 
+  @UseGuards(RBACGuard)
+  @RBAC({ table: TABLE.TAG, action: ACTION.DELETE })
   @Delete(':id')
   async remove(
     @Param('id') id: EntityId,
@@ -71,12 +84,16 @@ export class TagsController {
     return new BaseResponseDto<DeleteResult>('Success', null);
   }
 
+  @UseGuards(RBACGuard)
+  @RBAC({ table: TABLE.TAG, action: ACTION.EDIT })
   @Patch(':id/restore')
   async restore(@Param('id') id: EntityId): Promise<BaseResponseDto<Tag>> {
     const tag = await this.tagsService.restore(id);
     return new BaseResponseDto<Tag>('Success', tag);
   }
 
+  @UseGuards(RBACGuard)
+  @RBAC({ table: TABLE.TAG, action: ACTION.DELETE })
   @Delete(':id/destroy')
   async destroy(
     @Param('id') id: EntityId,

@@ -44,10 +44,12 @@ export class Blog extends DateAudit {
   @JoinColumn({ name: 'user_id' })
   user?: User;
 
-  @OneToMany(()=> BlogLike, bloglike => bloglike.blog)
+  @OneToMany(
+    () => BlogLike,
+    bloglike => bloglike.blog,
+  )
   blog_like: BlogLike;
 
-  
   constructor(partial: Partial<Blog>) {
     super();
     Object.assign(this, partial);

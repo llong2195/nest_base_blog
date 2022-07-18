@@ -9,7 +9,11 @@ import { CommentModule } from '../comment/comment.module';
 
 @Module({
   controllers: [BlogsController],
-  imports: [TypeOrmModule.forFeature([BlogRepository]), BlogLikeModule, CommentModule],
+  imports: [
+    TypeOrmModule.forFeature([BlogRepository]),
+    BlogLikeModule,
+    CommentModule,
+  ],
   providers: [BlogsService, BlogSubscriber],
   exports: [TypeOrmModule],
 })

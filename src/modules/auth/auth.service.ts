@@ -4,13 +4,15 @@ import { User } from '../users/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { BaseResponseDto } from 'src/base/base.dto';
 import { LoginRequestDto } from './dto/login-request.dto';
+import { RBACDto } from './dto/rbac.dto';
+import { PermissionService } from '../permission/permission.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
+    private readonly permissionService: PermissionService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
@@ -41,5 +43,13 @@ export class AuthService {
     });
 
     return token;
+  }
+
+  async checkRBAC(rbacDto: RBACDto, userId: number): Promise<boolean> {
+    const check = await this.permissionService.checkPermission({
+      rbacDto,
+      userId: userId,
+    });
+    return check;
   }
 }
