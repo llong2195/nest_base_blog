@@ -5,6 +5,7 @@ import { BaseService } from '../../base/base.service';
 import { LoggerService } from '../../logger/custom.logger';
 import { EntityId } from 'typeorm/repository/EntityId';
 import { DeleteResult } from 'typeorm/index';
+import { RBACDto } from '../auth/dto/rbac.dto';
 
 @Injectable()
 export class UserService extends BaseService<User, UserRepository> {

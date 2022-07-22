@@ -82,11 +82,11 @@ export class CategoriesController {
   @Patch(':id')
   async update(
     @Param('id') id: EntityId,
-    @Body() UpdateCategoryDto: UpdateCategoryDto,
+    @Body() updateCategoryDto: UpdateCategoryDto,
   ): Promise<BaseResponseDto<Category>> {
     const category = await this.categoriesService.upgrade(
       id,
-      UpdateCategoryDto,
+      updateCategoryDto,
     );
     return new BaseResponseDto<Category>(
       'Success',

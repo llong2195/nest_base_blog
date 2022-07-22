@@ -8,6 +8,7 @@ import { Blog } from './entities/blog.entity';
 import { DeleteResult } from 'typeorm';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { BlogLikeService } from '../blog-like/blog-like.service';
+import { BlogLike } from '../blog-like/entities/blog-like.entity';
 
 @Injectable()
 export class BlogsService extends BaseService<Blog, BlogRepository> {
@@ -25,10 +26,11 @@ export class BlogsService extends BaseService<Blog, BlogRepository> {
 
   getBlogsHot(): Promise<Blog[]> {
     return this.repository
-      .createQueryBuilder('blog')
-      .leftJoinAndSelect('blog.blog_like', 'blog_id')
-      .where('blog.deleted = false and isPublic = true')
-      .getMany();
+      .query(`SELECT *, count(*) as 'count' FROM nest_blog.blogs
+    inner join blog_like on blogs.id = blog_like.blog_id
+    group by blog_id
+    order by count DESC
+    limit 5`);
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -49,23 +51,30 @@ export class BlogsService extends BaseService<Blog, BlogRepository> {
     }
 
     const skip = option.limit * (option.page - 1) || 0;
-    return this.repository
+
+    const data = await this.repository
       .createQueryBuilder('blog')
+      .select()
+      // .addSelect(`(select COUNT(*) counts from blogs) as count`)
       .leftJoinAndSelect('blog.blog_like', 'blog_id')
       .where('blog.deleted = false and isPublic = true')
       .andWhere('blog.content like :name', { name: `%${option.name}%` })
       .limit(option.limit)
       .take(skip)
       .getMany();
+    data['blogCount'] = await this.repository.count();
+    console.log(data);
+
+    return data;
   }
 
-  async like(id: EntityId, userId: number) {
+  async like(id: EntityId, userId: number): Promise<BlogLike> {
     return await this.blogLikeService.create({
       blog_id: <number>id,
       user_id: userId,
     });
   }
-  async unlike(id: EntityId, userId: number) {
+  async unlike(id: EntityId, userId: number): Promise<DeleteResult> {
     return await this.blogLikeService.unlike({
       blog_id: <number>id,
       user_id: userId,

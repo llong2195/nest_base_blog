@@ -18,43 +18,6 @@ export class PermissionService extends BaseService<
     super(repository, logger);
   }
 
-  async checkPermission({
-    rbacDto,
-    userId,
-  }: {
-    rbacDto: RBACDto;
-    userId: EntityId;
-  }): Promise<boolean> {
-    const checkAdmin = await this.checkAdmin(userId);
-    if (checkAdmin) {
-      return true;
-    }
-    const query = await this.repository
-      .query(`SELECT * FROM nest_blog.permission
-      inner join per_detail on per_detail.per_id = permission.id
-      where per_id = ${userId} and action_name = '${rbacDto.action}' and table_name = '${rbacDto.table}'
-      
-    `);
-    console.log(query);
-
-    if (query[0]?.name === 'ADMIN') {
-      return true;
-    }
-
-    if (query.length) {
-      return true;
-    }
-
-    return false;
-  }
-
-  async checkAdmin(id: EntityId): Promise<boolean> {
-    const data = await this.repository.query(`SELECT * FROM nest_blog.permission
-    inner join users on users.per_id = permission.id
-    where users.id = ${id}`);
-    return data[0]?.name === 'ADMIN';
-  }
-
   async create(createPermissionDto: CreatePermissionDto): Promise<Permission> {
     const exits = await this.repository.findOne({
       where: { name: createPermissionDto.name },

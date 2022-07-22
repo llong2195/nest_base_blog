@@ -72,9 +72,14 @@ export class BlogsController {
   @RBAC({ table: TABLE.BLOG, action: ACTION.READ })
   @Get('/search')
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  async search(@Query() query): Promise<BaseResponseDto<Blog[]>> {
+  async search(@Query() query): Promise<BaseResponseDto<any>> {
     const blogs = await this.blogsService.search(query);
-    return new BaseResponseDto<Blog[]>('Success', plainToClass(Blog, blogs));
+    // console.log(blogs);
+    // {blogs, blogCount: blogs['blogCount']}
+    return new BaseResponseDto<any>(
+      'Success',
+      plainToClass(Blog, { blogs, blogCount: blogs['blogCount'] }),
+    );
   }
 
   @UseGuards(RBACGuard)

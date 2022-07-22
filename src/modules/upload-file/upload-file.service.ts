@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUploadFileDto } from './dto/create-upload-file.dto';
-import { UpdateUploadFileDto } from './dto/update-upload-file.dto';
 import { UploadFile } from './entities/upload-file.entity';
 import { BaseService } from '../../base/base.service';
 import { LoggerService } from '../../logger/custom.logger';
 import { UserService } from '../users/user.service';
 import { UploadFileRepository } from './upload-file.repository';
 import { EntityId } from 'typeorm/repository/EntityId';
-import * as path from 'path';
 import * as fs from 'fs';
-import { DeleteResult } from 'typeorm';
+import * as sharp from 'sharp';
 
 @Injectable()
 export class UploadFileService extends BaseService<
@@ -30,12 +27,24 @@ export class UploadFileService extends BaseService<
   ): Promise<UploadFile> {
     // console.log(file);
 
-    fs.renameSync(file.path, path.resolve('src/public/file', file.filename));
+    // fs.renameSync(file.path, path.resolve('src/public/file', file.filename));
     const createUploadFile = new UploadFile(null);
     createUploadFile.name = file.filename;
-    createUploadFile.url = `src/public/file/${file.filename}`;
+    createUploadFile.url = `${file.filename}`;
     createUploadFile.user_id = <number>userId;
     console.log(file);
+
+    sharp(file.path)
+      .resize({
+        width: 317,
+        height: 262,
+      })
+      .toFile('upload/' + '262x317-' + file.filename, function(err) {
+        if (err) {
+          console.error('sharp>>>', err);
+        }
+        console.log('ok okoko');
+      });
 
     return this.store(createUploadFile);
   }

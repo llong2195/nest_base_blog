@@ -22,9 +22,7 @@ import { AuthUser } from 'src/decorators/auth.user.decorator';
 import { plainToClass } from 'class-transformer';
 import { RBACGuard } from '../auth/guards/rbac.guard';
 import { RBAC } from '../auth/decorator/rbac.decorator';
-import { ACTION, TABLE } from '../per-detail/entities/per-detail.entity';
-// import { RBACGuard } from '../auth/guards/rbac.guard';
-// import { RBAC } from '../auth/decorator/rbac.decorator';
+import { TABLE, ACTION } from '../per-detail/entities/per-detail.entity';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('tags')

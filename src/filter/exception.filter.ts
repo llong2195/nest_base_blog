@@ -32,9 +32,12 @@ export class AllExceptionFilter implements ExceptionFilter {
       };
     } else if (exception instanceof QueryFailedError) {
       statusCode = HttpStatus.BAD_REQUEST;
+      const mess = exception.message.includes('ER_DUP_ENTRY')
+        ? 'Loi'
+        : exception.message;
       responseBody = {
         statusCode: statusCode,
-        message: exception.message,
+        message: mess,
       };
     } else if (exception instanceof Error) {
       responseBody = {

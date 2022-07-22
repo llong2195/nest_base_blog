@@ -1,7 +1,6 @@
 import {
   Column,
   Entity,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
@@ -30,7 +29,7 @@ export class User extends DateAudit {
   @Column()
   password: string;
 
-  @Column({ name: 'per_id' })
+  @Column({ name: 'per_id', default: '4' })
   per_id: number;
 
   @OneToMany(

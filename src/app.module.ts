@@ -23,9 +23,16 @@ import { UserFollowModule } from './modules/user-follow/user-follow.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { PermissionModule } from './modules/permission/permission.module';
 import { PerDetailModule } from './modules/per-detail/per-detail.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { CommentMModule } from './modules/comment-m/comment-m.module';
+console.log(join(__dirname, '../../', '/upload'));
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../', '/upload'),
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [appConfig, databaseConfig, authConfig],
@@ -46,6 +53,7 @@ import { PerDetailModule } from './modules/per-detail/per-detail.module';
     CommentModule,
     PermissionModule,
     PerDetailModule,
+    CommentMModule,
   ],
   controllers: [],
   providers: [
